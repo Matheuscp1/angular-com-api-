@@ -2,7 +2,7 @@ const express = require('express')
 const route = express.Router()
 const UserModel = require('../model/User')
 const bcrypt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken')
 route.get("/", function (req, res) {
     res.send('<h1> Bem vindo ao api :3 </h1>')
 })
@@ -31,6 +31,9 @@ route.get('/user/:email?', (req, res) => {
                 delete user.password
             })
             res.status(200).json(users)
+        }).catch(e => {
+            console.log(e)
+            res.status(400).json({ error: e.message })
         })
     }
 
@@ -51,7 +54,7 @@ route.post('/auth', (req, res) => {
             let compare = bcrypt.compareSync(password, user.password)
             if (compare) {
                 delete user.password
-                jwt.sign({ id: user.id, email: user.email }, 'testeJWT', { expiresIn: '2h' }, (err, token) => {
+                jwt.sign({ id: user.id, email: user.email, name: user.name }, 'testeJWT', { expiresIn: '2h' }, (err, token) => {
                     if (err) {
                         res.status(401).json(err)
                     } else {
@@ -67,7 +70,8 @@ route.post('/auth', (req, res) => {
             }
         }
     }).catch(e => {
-        res.status(400).json({ error: e.errors.map(err => err.message) })
+        console.log(e)
+        res.status(400).json({ error: e.message })
     })
 })
 
@@ -82,8 +86,8 @@ route.post('/user', (req, res) => {
         console.log('criado com sucesso')
         res.status(201).json(req.body)
     }).catch(e => {
-        console.log(e.message)
-        res.status(400).json({ error: e.errors.map(err => err.message) })
+        console.log(e)
+        res.status(400).json({ error: e.message })
     })
 })
 
