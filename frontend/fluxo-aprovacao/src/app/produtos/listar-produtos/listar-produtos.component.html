@@ -1,0 +1,58 @@
+<p class="text-center text-muted" *ngIf="!produtos"> Sem produtos para mostrar</p>
+<!-- <div class="conteiner">
+    <div class="linha">
+        <h1>Painel de monitoramento de ramal</h1>
+    </div>
+    <form id="formulario" method="POST">
+        <label class="">Nome do usuário</label>
+        <div class="">
+            <input type="text" name="nomeUser" id="nomeUser" class="formulario" maxlength="20" required placeholder="Nome de usúario">
+        </div>
+
+        <label>Numéro</label>
+        <div>
+            <input type="text" name="numero" id="numero" class="formulario" maxlength="14" required placeholder="(00)0000-0000">
+        </div>
+
+        <label>IP</label>
+        <div>
+            <input type="text" name="ip" id="ip" class="formulario" maxlength="15" required placeholder="192.168.0.1">
+        </div>
+
+        <label>Status</label>
+        <div>
+            <select name="status" id="status" required class="formulario">
+      <option value=""></option>
+      <option value="Ocupado">Ocupado</option>
+      <option value="Chamando">Chamando</option>
+      <option value="Disponivel">Disponivel</option>
+      <option value="Indisponivel">Indisponivel</option>
+    </select>
+        </div>
+
+        <div>
+            <span id="spanSalvar"><button class='botao botao-sucesso' id='salvar'> Salvar</button></span>
+            <span id="spanEditar" hidden><button class='botao  botao-editar' id='editar'> Editar</button></span>
+        </div>
+        <input type="text" name="idUpdate" id="idUpdate" hidden>
+    </form> -->
+    <div class="linha">
+        <div id="cartoes">
+            <div class="cartao" *ngFor="let produto of produtos">
+              <div class="card" style="width: 18rem;">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Valor: {{produto.valor | currency:'BRL'}}</li>
+                  <li class="list-group-item">Solicitante: {{produto.solicitante }} </li>
+                  <li class="list-group-item">Descrição: {{produto.desc }}</li>
+                  <li class="list-group-item">Obs: {{produto.obs }}</li>
+                  <li class="list-group-item">Aprovado: {{produto.aprovado }}</li>
+                  <li class="list-group-item">Ações: <a  class='botao ' [routerLink]="['/produtos', produto.id]" >
+                    Editar </a> <a  class='botao' > Excluir </a>
+                   </li>
+                </ul>
+              </div>
+
+            <div></div>
+
+    </div>
+</div>

@@ -5,6 +5,7 @@ import {CurrencyPipe} from '@angular/common'
 
 
 import { Produto } from './produto';
+import { ProdutosService } from '../produtos.service';
 
 @Component({
   selector: 'app-novo-produto',
@@ -15,7 +16,7 @@ export class NovoProdutoComponent implements OnInit {
 
 
   constructor(private activatedRoute: ActivatedRoute,     private formBuilder: FormBuilder,
-    private pipe: CurrencyPipe) {
+    private pipe: CurrencyPipe, private produtosService: ProdutosService) {
 
   }
   produtoForm!: FormGroup;
@@ -30,11 +31,10 @@ export class NovoProdutoComponent implements OnInit {
         ],
       }
     );
-
     this.produtoForm.valueChanges.subscribe( form => {
       if(form.valor){
         this.produtoForm.patchValue({
-          valor: this.pipe.transform(form.valor.replace(/\D/g,'').replace(/^0+/,''), 'BRL','symbol','4.2-2')
+          valor: this.pipe.transform(form.valor.replace(/\D/g,'').replace(/0+/,''), 'BRL','symbol')
         }, {emitEvent: false})
       }
     })
@@ -42,9 +42,17 @@ export class NovoProdutoComponent implements OnInit {
 
   cadastrar() {
     if (this.produtoForm.valid) {
-      const novoUsuario = this.produtoForm.getRawValue() as Produto;
+      const novoProduto = this.produtoForm.getRawValue() as Produto;
+      this.produtosService.cadastraNovoProduto(novoProduto).subscribe(
+        (e) => {
+          alert('Produto cadastrado')
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
       this.produtoForm.reset()
-      console.log(novoUsuario.desc)
+      console.log(novoProduto.valor)
 
     }
   }

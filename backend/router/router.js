@@ -1,8 +1,10 @@
 const express = require('express')
 const route = express.Router()
 const UserModel = require('../model/User')
+const ProdutosModel = require('../model/Produtos')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const authMiddleware = require('../middleware/auth.middleware')
 route.get("/", function (req, res) {
     res.send('<h1> Bem vindo ao api :3 </h1>')
 })
@@ -19,26 +21,31 @@ route.get('/user/:email?', (req, res) => {
         }).then(user => {
            
             res.status(200).json(!!user)
+        }).catch((e) =>{
+            
         })
     } else {
-        UserModel.findAll({
-            raw: true, order: [
-                ['id', 'desc']
-            ]
-        }
-        ).then(users => {
-            users.forEach(user => {
-                delete user.password
-            })
-            res.status(200).json(users)
-        }).catch(e => {
-            console.log(e)
-            res.status(400).json({ error: e.message })
-        })
+            res.status(404).json({ error: "Email não existe"})
     }
 
 })
 
+route.get('/produtos/', authMiddleware.auth, (req, res) => {
+    let user_id = req.loggedUser.id
+        ProdutosModel.findAll({
+            where: {
+                user_id
+            },
+            raw: true
+        }).then(produtos => {
+            console.log(produtos)
+            res.status(200).json(produtos)
+        }).catch(e => {
+            console(e)
+        })
+
+
+})
 
 route.post('/auth', (req, res) => {
     let { password, email } = req.body
@@ -91,4 +98,19 @@ route.post('/user', (req, res) => {
     })
 })
 
+route.post('/produtos', authMiddleware.auth, (req, res) => {
+ let {valor,desc,solicitante} = req.body.novoProduto
+ let user_id = req.loggedUser.id
+
+ valor = valor.substring(3).replaceAll(".", "").replace(",",'.')
+  ProdutosModel.create({
+    valor, desc, solicitante, user_id
+    }).then(() => {
+        console.log('criado com sucesso')
+        res.status(201).json(req.body)
+    }).catch(e => {
+        console.log(e)
+        res.status(400).json({ error: e.message })
+    })
+})
 module.exports = route

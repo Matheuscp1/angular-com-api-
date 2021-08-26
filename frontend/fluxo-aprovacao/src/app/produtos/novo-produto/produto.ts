@@ -1,4 +1,5 @@
 export interface Produto {
+    id?: number
     solicitante: string;
     desc: string;
     valor: number;
