@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
 import { TokenService } from 'src/app/autenticacao/token.service';
 
 import { Produto } from './novo-produto/produto';
@@ -22,5 +21,18 @@ export class ProdutosService {
     const token = this.tokenService.retornaToken();
     const headers = new HttpHeaders().append('x-acess-token',token);
     return this.http.get<[Produto]>('http://localhost:8080/produtos', {headers});
+  }
+
+
+  listarProdutoId(id:number){
+    const token = this.tokenService.retornaToken();
+    const headers = new HttpHeaders().append('x-acess-token',token);
+    return this.http.get<Produto>(`http://localhost:8080/produtos/${id}`, {headers});
+  }
+
+  editarProdutoId(id:number,produto: Produto){
+    const token = this.tokenService.retornaToken();
+    const headers = new HttpHeaders().append('x-acess-token',token);
+    return this.http.put<Produto>(`http://localhost:8080/produtos/${id}`, produto, {headers});
   }
 }

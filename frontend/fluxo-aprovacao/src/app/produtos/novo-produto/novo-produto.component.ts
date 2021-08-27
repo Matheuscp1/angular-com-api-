@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import {CurrencyPipe} from '@angular/common'
 
 
@@ -15,8 +14,7 @@ import { ProdutosService } from '../produtos.service';
 export class NovoProdutoComponent implements OnInit {
 
 
-  constructor(private activatedRoute: ActivatedRoute,     private formBuilder: FormBuilder,
-    private pipe: CurrencyPipe, private produtosService: ProdutosService) {
+  constructor(private formBuilder: FormBuilder,private pipe: CurrencyPipe, private produtosService: ProdutosService) {
 
   }
   produtoForm!: FormGroup;

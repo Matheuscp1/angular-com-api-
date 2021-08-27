@@ -5,6 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NovoProdutoComponent } from './novo-produto/novo-produto.component';
 import { ProdutosRoutingModule } from './produtos-routing.module';
 import { ListarProdutosComponent } from './listar-produtos/listar-produtos.component';
+import { EditarProdutoComponent } from './editar-produto/editar-produto.component';
 
 
 
@@ -12,6 +13,7 @@ import { ListarProdutosComponent } from './listar-produtos/listar-produtos.compo
   declarations: [
     NovoProdutoComponent,
     ListarProdutosComponent,
+    EditarProdutoComponent
   ],
   imports: [CommonModule, ProdutosRoutingModule, SharedModule],
   providers: [CurrencyPipe]

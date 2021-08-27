@@ -11,7 +11,7 @@ route.get("/", function (req, res) {
 
 
 route.get('/user/:email?', (req, res) => {
-    email = req.params.email
+   let email = req.params.email
     if (email) {
         UserModel.findOne({
             where: {
@@ -30,8 +30,23 @@ route.get('/user/:email?', (req, res) => {
 
 })
 
-route.get('/produtos/', authMiddleware.auth, (req, res) => {
+route.get('/produtos/:id?', authMiddleware.auth, (req, res) => {
     let user_id = req.loggedUser.id
+    let id = req.params.id
+    console.log(id)
+    if (id) {
+        ProdutosModel.findOne({
+            where: {
+                id
+            },
+            raw: true
+        }).then(produto => {
+           
+            res.status(200).json(produto)
+        }).catch((e) =>{
+            
+        })
+    }else{
         ProdutosModel.findAll({
             where: {
                 user_id
@@ -43,7 +58,7 @@ route.get('/produtos/', authMiddleware.auth, (req, res) => {
         }).catch(e => {
             console(e)
         })
-
+    }
 
 })
 
@@ -112,5 +127,27 @@ route.post('/produtos', authMiddleware.auth, (req, res) => {
         console.log(e)
         res.status(400).json({ error: e.message })
     })
+})
+
+route.put('/produtos/:id', authMiddleware.auth, (req, res) => {
+    id = req.params.id
+    if (id) {
+        if (isNaN(id)) {
+            res.status(400).send('Isso não é um numero' + id)
+        } else {
+            id = parseInt(id)
+            ProdutosModel.update(
+                req.body,
+                { where: { id }},
+            ).then(() => {
+                res.json('Produto atualizado').status(200)
+            }).catch(e => {
+                console.log(e)
+                res.status(400).json({ error: e.message })
+            })
+        }
+    } else {
+        res.status(400).json({ error: 'Id é obrigatorio' })
+    }
 })
 module.exports = route
