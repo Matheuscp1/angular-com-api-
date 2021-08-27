@@ -131,13 +131,16 @@ route.post('/produtos', authMiddleware.auth, (req, res) => {
 
 route.put('/produtos/:id', authMiddleware.auth, (req, res) => {
     id = req.params.id
+    console.log( req.body)
     if (id) {
         if (isNaN(id)) {
             res.status(400).send('Isso não é um numero' + id)
         } else {
             id = parseInt(id)
+            let {solicitante,desc,valor,obs,aprovado} = req.body
+            valor = valor.substring(3).replaceAll(".", "").replace(",",'.')
             ProdutosModel.update(
-                req.body,
+                {solicitante,desc,valor,obs,aprovado},
                 { where: { id }},
             ).then(() => {
                 res.json('Produto atualizado').status(200)
