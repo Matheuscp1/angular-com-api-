@@ -56,7 +56,7 @@ route.get('/produtos/:id?', authMiddleware.auth, (req, res) => {
             console.log(produtos)
             res.status(200).json(produtos)
         }).catch(e => {
-            console(e)
+            console.log(e)
         })
     }
 
