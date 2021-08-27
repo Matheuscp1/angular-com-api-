@@ -1,5 +1,5 @@
-# angular-com-api-
-Aplicação angular com autenticação jtw
+# angular-com-api-v12
+Aplicação angular com consumo de api rest e  autenticação jtw
 <br>
 ##Configurações necessárias
 <br>
